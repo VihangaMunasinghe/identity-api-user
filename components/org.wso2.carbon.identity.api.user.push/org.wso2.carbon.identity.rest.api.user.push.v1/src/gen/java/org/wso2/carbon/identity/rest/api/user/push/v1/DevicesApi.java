@@ -150,7 +150,7 @@ public class DevicesApi  {
     @Path("/{deviceId}/update")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @ApiOperation(value = "Update a registered device from the device.", notes = "This API is used to update a registered device through device. ", response = Void.class, tags={ "device" })
+    @ApiOperation(value = "Update a registered device from the mobile device.", notes = "This API is used to update a registered device through the mobile device. ", response = Void.class, tags={ "device" })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "The device was updated successfully.", response = Void.class),
         @ApiResponse(code = 400, message = "Invalid input in the request.", response = Error.class),
@@ -158,7 +158,7 @@ public class DevicesApi  {
         @ApiResponse(code = 403, message = "Access forbidden.", response = Void.class),
         @ApiResponse(code = 500, message = "Internal server error.", response = Error.class)
     })
-    public Response updateDeviceFromMobile(@ApiParam(value = "ID of the device to be updated",required=true) @PathParam("deviceId") String deviceId, @ApiParam(value = "Update request sent from the device." ,required=true) @Valid UpdateRequestDTO updateRequestDTO) {
+    public Response updateDeviceFromMobile(@ApiParam(value = "ID of the device to be updated",required=true) @PathParam("deviceId") String deviceId, @ApiParam(value = "Update request sent from the mobile device." ,required=true) @Valid UpdateRequestDTO updateRequestDTO) {
 
         return delegate.updateDeviceFromMobile(deviceId,  updateRequestDTO );
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,20 +25,20 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 
 /**
- * Update device request body sent from the device
+ * Update device request body sent from the mobile device
  **/
 
 import io.swagger.annotations.*;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
-@ApiModel(description = "Update device request body sent from the device")
+@ApiModel(description = "Update device request body sent from the mobile device")
 public class UpdateRequestDTO  {
   
     private String token;
 
     /**
-    * JWT containing the update device information signed with a unique private key
+    * JWT containing the device information to be updated signed with the unique private key
     **/
     public UpdateRequestDTO token(String token) {
 
@@ -46,7 +46,7 @@ public class UpdateRequestDTO  {
         return this;
     }
     
-    @ApiModelProperty(example = "signedJWTToken", required = true, value = "JWT containing the update device information signed with a unique private key")
+    @ApiModelProperty(example = "signedJWTToken", required = true, value = "JWT containing the device information to be updated signed with the unique private key")
     @JsonProperty("token")
     @Valid
     @NotNull(message = "Property token cannot be null.")

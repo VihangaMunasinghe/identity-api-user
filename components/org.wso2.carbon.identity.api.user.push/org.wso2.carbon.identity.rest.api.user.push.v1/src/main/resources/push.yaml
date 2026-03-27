@@ -152,8 +152,8 @@ paths:
       tags:
         - device
       description: |
-        This API is used to update a registered device through device.
-      summary: Update a registered device from the device.
+        This API is used to update a registered device through the mobile device.
+      summary: Update a registered device from the mobile device.
       operationId: updateDeviceFromMobile
       parameters:
         - name: deviceId
@@ -163,7 +163,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description: Update request sent from the device.
+        description: Update request sent from the mobile device.
         required: true
         content:
           application/json:
@@ -320,13 +320,13 @@ components:
             type: string
     UpdateRequestDTO:
       type: object
-      description: Update device request body sent from the device
+      description: Update device request body sent from the mobile device
       required:
         - token
       properties:
         token:
           type: string
-          description: JWT containing the update device information signed with a unique private key
+          description: JWT containing the device information to be updated signed with the unique private key
           example: 'signedJWTToken'
     RemoveRequestDTO:
       type: object
