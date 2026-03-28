@@ -79,7 +79,7 @@ public class DevicesApiServiceImpl implements DevicesApiService {
 
         String token = updateRequestDTO.getToken();
         pushDeviceManagementService.updateDeviceFromMobile(deviceId, token);
-        return Response.status(Response.Status.OK).build();
+        return Response.noContent().build();
     }
 
     @Override

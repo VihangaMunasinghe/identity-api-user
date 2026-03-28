@@ -152,7 +152,7 @@ public class DevicesApi  {
     @Produces({ "application/json" })
     @ApiOperation(value = "Update a registered device from the mobile device.", notes = "This API is used to update a registered device through the mobile device. ", response = Void.class, tags={ "device" })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "The device was updated successfully.", response = Void.class),
+        @ApiResponse(code = 204, message = "The device was updated successfully.", response = Void.class),
         @ApiResponse(code = 400, message = "Invalid input in the request.", response = Error.class),
         @ApiResponse(code = 401, message = "Authentication information is missing or invalid.", response = Void.class),
         @ApiResponse(code = 403, message = "Access forbidden.", response = Void.class),
