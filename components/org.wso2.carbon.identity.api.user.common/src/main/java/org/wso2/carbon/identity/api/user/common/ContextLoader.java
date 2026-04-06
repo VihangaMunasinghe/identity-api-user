@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019-2026, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,44 @@ public class ContextLoader {
      */
     public static User getUserFromContext() {
 
-        return getUser(IdentityTenantUtil.resolveTenantDomain(), getUsernameFromContext());
+        String tenantDomain = IdentityTenantUtil.resolveTenantDomain();
+        String username = getUsernameFromContext();
+
+        if (StringUtils.isBlank(username) && isOrganizationUser()) {
+            return getUserFromOrganizationContext(tenantDomain);
+        }
+        return getUser(tenantDomain, username);
+    }
+
+    private static boolean isOrganizationUser() {
+
+        return StringUtils.isNotEmpty(
+                PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserResidentOrganizationId());
+    }
+
+    private static User getUserFromOrganizationContext(String tenantDomain) {
+
+        String userId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserId();
+        if (StringUtils.isBlank(userId)) {
+            throw new APIError(Response.Status.INTERNAL_SERVER_ERROR,
+                    new ErrorResponse.Builder()
+                            .withDescription("Unable to resolve user from organization context.")
+                            .withCode(ERROR_CODE_SERVER_ERROR.getCode())
+                            .withMessage(ERROR_CODE_SERVER_ERROR.getMessage()).build());
+        }
+        try {
+            UserRealm userRealm = CarbonContext.getThreadLocalCarbonContext().getUserRealm();
+            AbstractUserStoreManager userStoreManager =
+                    (AbstractUserStoreManager) userRealm.getUserStoreManager();
+            String username = userStoreManager.getUserNameFromUserID(userId);
+            return getUser(tenantDomain, username);
+        } catch (UserStoreException e) {
+            throw new APIError(Response.Status.INTERNAL_SERVER_ERROR,
+                    new ErrorResponse.Builder()
+                            .withDescription("Error occurred while resolving the user from organization context.")
+                            .withCode(ERROR_CODE_SERVER_ERROR.getCode())
+                            .withMessage(ERROR_CODE_SERVER_ERROR.getMessage()).build());
+        }
     }
 
 
