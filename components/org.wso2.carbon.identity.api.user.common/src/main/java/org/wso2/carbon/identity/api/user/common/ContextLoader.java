@@ -83,7 +83,7 @@ public class ContextLoader {
         String tenantDomain = IdentityTenantUtil.resolveTenantDomain();
         String username = getUsernameFromContext();
 
-        if (StringUtils.isBlank(username) && isOrganizationUser()) {
+        if (!StringUtils.isNotEmpty(username) && isOrganizationUser()) {
             return getUserFromOrganizationContext(tenantDomain);
         }
         return getUser(tenantDomain, username);
@@ -97,8 +97,9 @@ public class ContextLoader {
 
     private static User getUserFromOrganizationContext(String tenantDomain) {
 
+        LOG.debug("Resolving user from organization context for tenant domain: " + tenantDomain);
         String userId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserId();
-        if (StringUtils.isBlank(userId)) {
+        if (!StringUtils.isNotEmpty(userId)) {
             throw new APIError(Response.Status.INTERNAL_SERVER_ERROR,
                     new ErrorResponse.Builder()
                             .withDescription("Unable to resolve user from organization context.")
@@ -112,6 +113,7 @@ public class ContextLoader {
             String username = userStoreManager.getUserNameFromUserID(userId);
             return getUser(tenantDomain, username);
         } catch (UserStoreException e) {
+            LOG.error("Error occurred while resolving username from userId: " + userId);
             throw new APIError(Response.Status.INTERNAL_SERVER_ERROR,
                     new ErrorResponse.Builder()
                             .withDescription("Error occurred while resolving the user from organization context.")
